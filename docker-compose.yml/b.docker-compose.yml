@@ -1,0 +1,45 @@
+version: '3'
+services:
+  php:
+    build:
+      context: ./docker-src/php
+    container_name: php
+    env_file:
+      - .env
+    volumes:
+      - .:/drupal
+    networks:
+      - connector
+
+  app:
+    image: webdevops/apache:alpine
+    container_name: app
+    environment:
+      - WEB_PHP_SOCKET=php:9000
+      - WEB_DOCUMENT_ROOT=/drupal/web
+    ports:
+      - 1234:80
+    volumes:
+      - .:/drupal
+    networks:
+      - connector
+
+  db:
+    image: mariadb
+    container_name: db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    env_file:
+      - .env
+    ports:
+      - 3306
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - connector
+
+networks:
+  connector: {}
+
+volumes:
+  database: {}

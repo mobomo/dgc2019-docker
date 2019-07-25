@@ -1,0 +1,27 @@
+version: '3'
+services:
+  php:
+    image: php:fpm-alpine
+    container_name: php
+    networks:
+      - connector
+
+  app:
+    image: webdevops/apache:alpine
+    container_name: app
+    networks:
+      - connector
+
+  db:
+    image: mariadb
+    container_name: db
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - connector
+
+networks:
+  connector: {}
+
+volumes:
+  database: {}

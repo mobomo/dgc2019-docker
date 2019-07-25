@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+PARAMS=""
+
+for PARAM in "$@"
+do
+  PARAMS="${PARAMS} \"${PARAM}\""
+done
+
+docker exec -it php sh -c "/drupal/vendor/bin/drupal --root=/drupal/web ${PARAMS}"
